@@ -1,13 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <link rel="icon" href="/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vite App</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue.js Notes App</title>
+  <link rel="stylesheet" href="src/assets/main.css">
+  <script src="https://unpkg.com/vue@3.0.2"></script>
+</head>
+
+<body>
+
+  <div id="app">
+    <h1>My Notes</h1>
+
+    <!-- Add Note Form -->
+    <div>
+      <label for="newTitle">Title: </label>
+      <input type="text" id="newTitle" v-model="newNote.title" placeholder="Enter title">
+      <label for="newBody"> Body: </label>
+      <input type="text" id="newBody" v-model="newNote.body" placeholder="Enter body">
+      <button @click="saveNote">Save Note</button>
+    </div>
+
+    <!-- Notes Table -->
+    <table>
+      <thead>
+        <tr>
+          <th>Priority</th>
+          <th>Title</th>
+          <th>Body</th>
+          <th>Actions</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="note in notes" :key="note.id" :class="{ 'editing': note.editing }">
+          <td>
+            <span v-if="!note.editing">{{ note.isFavorite }}</span>
+            <input v-else type="text" v-model="note.isFavorite">
+          </td>
+          <td>
+            <span v-if="!note.editing">{{ note.title }}</span>
+            <input v-else type="text" v-model="note.title">
+          </td>
+          <td>
+            <span v-if="!note.editing">{{ note.body }}</span>
+            <input v-else type="text" v-model="note.body">
+          </td>
+          <td>
+            <button @click="deleteNote(note.id)">Delete</button>
+            <button @click="toggleFavorite(note.id)">
+              {{ note.isFavorite ? 'Unmark as Priority' : 'Mark as Priority' }}
+            </button>
+            <button @click="toggleEdit(note)">Edit</button>
+            <button @click="toggleCompleted(note)">
+              {{ note.completed ? 'Mark as Incomplete' : 'Mark as Completed' }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script src="src/main.js"></script>
+</body>
+
 </html>

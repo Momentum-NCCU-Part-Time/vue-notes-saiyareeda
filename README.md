@@ -24,7 +24,7 @@ cp sample-db.json db.json
 This application uses two different servers: one for the API, and one for the Vue application, using a build tool called Vite. To start both servers, run the following command:
 
 ```sh
-npm start
+nm start
 ```
 
 This will start `json-server` and the Vite development server. It should open a browser window at the same time. You will need to leave this running while you are working on this application.
@@ -48,7 +48,16 @@ To add a new note, make a `POST` request to `http://localhost:3000/notes/`. You 
 ```js
 fetch('http://localhost:3000/notes/', {
   method: 'POST', 
+  hfetch('http://localhost:3000/notes/', {
+  method: 'POST', 
   headers: {"Content-Type": "application/json"}, 
+  body: JSON.stringify({ title, body, updatedAt: new Date() })
+})
+.then(res => res.json())
+.then(
+  data => console.log(data)
+  // or whatever you need to do
+)eaders: {"Content-Type": "application/json"}, 
   body: JSON.stringify({ title, body, updatedAt: new Date() })
 })
 .then(res => res.json())
@@ -75,12 +84,13 @@ Your application should have the following functionality:
 1. A user can see a list of their notes displayed on the page
 2. A user can add a new note. When they do, their note should be added to the existing list of notes without a page refresh.
 3. A user can edit a note they have already created. When they do, their note should be updated in the list of notes without a page refresh.
-4. A user can delete an existing note. When a note is deleted, it should automatically be removed from the list of notes without a page refresh.
+4. A user can dedeletelete an existing note. When a note is deleted, it should automatically be removed from the list of notes without a page refresh.
 
 ## 🌶️ Spicy options
-
+delete
 - Allow notes to be marked as completed. The UI should indicate a note is completed, and completed notes should be moved to the bottom of the list.
 - Create an undo delete feature: once a note is deleted, a user should be able to click a button to undo the delete and restore the note to the list. One way to do this is to modify the delete feature so that a note is never actually destroyed on the server, but instead is marked as deleted. Then, you can add a button to the UI that will restore the note to the list by making a `PATCH` request to the server to mark the note as not deleted.
 - Add a "priority" attribute to notes that can flag a note as "high priority". The UI should indicate which notes are high priority.
 - Sort notes by date. Notes that have been updated more recently should appear at the top of the list.
 - Allow your user to add tags to notes and add a search bar to search by tag.
+ Allow notes to be marked as completed.
